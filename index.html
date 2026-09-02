@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mock-up SIG Pemantauan Infrastruktur — Kota Singkawang</title>
+<style>
+  :root{
+    --navy-900:#0B2436;
+    --navy-800:#123449;
+    --navy-700:#14405C;
+    --teal-600:#176B6B;
+    --teal-500:#1C7C7C;
+    --gold-500:#C99A3E;
+    --gold-300:#E3C583;
+    --cream-50:#F6F4EE;
+    --cream-100:#EFEBE0;
+    --ink-900:#16232D;
+    --ink-600:#4C5C66;
+    --ink-400:#7C8B92;
+    --line:#DCD6C6;
+    --ok:#2E8B57;
+    --ok-bg:#E4F3EA;
+    --warn:#C88A1E;
+    --warn-bg:#FBF0DC;
+    --bad:#B8433C;
+    --bad-bg:#FBE7E4;
+    --radius-card:4px;
+    --radius-pill:999px;
+    --font-head:'Iowan Old Style','Source Serif 4',Georgia,'Times New Roman',serif;
+    --font-ui:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;
+    --font-mono:'IBM Plex Mono','SFMono-Regular',Consolas,monospace;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    font-family:var(--font-ui);
+    background:var(--cream-50);
+    color:var(--ink-900);
+    -webkit-font-smoothing:antialiased;
+  }
+
+  /* ===== App switcher shell ===== */
+  .shell{
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+  }
+  .switcher-bar{
+    background:var(--navy-900);
+    color:var(--cream-50);
+    padding:14px 24px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:16px;
+    flex-wrap:wrap;
+    border-bottom:3px solid var(--gold-500);
+  }
+  .switcher-label{
+    font-family:var(--font-head);
+    font-size:15px;
+    letter-spacing:.2px;
+    color:var(--gold-300);
+  }
+  .switcher-label strong{color:var(--cream-50);font-weight:600;}
+  .switcher-tabs{
+    display:flex;
+    gap:2px;
+    background:var(--navy-800);
+    padding:3px;
+    border-radius:6px;
+  }
+  .switcher-tabs button{
+    font-family:var(--font-ui);
+    font-size:13.5px;
+    font-weight:600;
+    color:var(--cream-100);
+    background:transparent;
+    border:none;
+    padding:9px 16px;
+    border-radius:4px;
+    cursor:pointer;
+    transition:background .15s ease, color .15s ease;
+  }
+  .switcher-tabs button.active{
+    background:var(--gold-500);
+    color:var(--navy-900);
+  }
+  .switcher-tabs button:not(.active):hover{
+    background:rgba(255,255,255,.08);
+  }
+
+  .view{display:none;flex:1;}
+  .view.active{display:flex;flex-direction:column;}
+
+  /* =====================================================
+     VIEW 1 — WEB DASHBOARD (Pimpinan / BAPPERIDA / Dinas)
+     ===================================================== */
+  .topbar{
+    background:var(--navy-900);
+    color:var(--cream-50);
+    padding:16px 28px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    gap:14px;
+  }
+  .brand{display:flex;align-items:center;gap:12px;}
+  .brand-mark{
+    width:38px;height:38px;border-radius:8px;
+    background:linear-gradient(155deg,var(--teal-500),var(--navy-700));
+    display:flex;align-items:center;justify-content:center;
+    border:1px solid rgba(227,197,131,.5);
+    flex-shrink:0;
+  }
+  .brand-mark svg{width:20px;height:20px;}
+  .brand-text .eyebrow{
+    font-size:11px;color:var(--gold-300);letter-spacing:.4px;
+  }
+  .brand-text h1{
+    font-family:var(--font-head);
+    font-size:19px;font-weight:600;margin:1px 0 0;color:#fff;
+  }
+  .topbar-role{
+    font-size:12.5px;color:var(--ink-400);
+    background:var(--navy-800);
+    border:1px solid rgba(255,255,255,.08);
+    padding:6px 12px;border-radius:var(--radius-pill);
+    display:flex;align-items:center;gap:8px;
+  }
+  .topbar-role .dot{width:7px;height:7px;border-radius:50%;background:var(--gold-500);}
+
+  .app-body{
+    display:flex;
+    flex:1;
+    min-height:0;
+  }
+
+  /* Sidebar */
+  .sidebar{
+    width:212px;
+    flex-shrink:0;
+    background:#fff;
+    border-right:1px solid var(--line);
+    padding:20px 0;
+  }
+  .sidebar-section-label{
+    font-size:11px;
+    color:var(--ink-400);
+    padding:0 20px 8px;
+    text-transform:uppercase;
+    letter-spacing:.5px;
+  }
+  .sidebar-item{
+    display:flex;align-items:center;gap:10px;
+    padding:9px 20px;
+    font-size:13.5px;
+    color:var(--ink-600);
+    cursor:pointer;
+    border-left:3px solid transparent;
+  }
+  .sidebar-item .swatch{width:8px;height:8px;border-radius:2px;flex-shrink:0;}
+  .sidebar-item.is-active{
+    background:var(--cream-100);
+    border-left-color:var(--teal-500);
+    color:var(--navy-900);
+    font-weight:600;
+  }
+  .sidebar-item:hover:not(.is-active){background:var(--cream-50);}
+  .sidebar-divider{height:1px;background:var(--line);margin:14px 20px;}
+
+  /* Main content */
+  .main{
+    flex:1;
+    padding:22px 26px 30px;
+    overflow-y:auto;
+  }
+  .main-heading{
+    display:flex;justify-content:space-between;align-items:flex-end;
+    margin-bottom:18px;flex-wrap:wrap;gap:10px;
+  }
+  .main-heading h2{
+    font-family:var(--font-head);
+    font-size:22px;font-weight:600;margin:0 0 4px;color:var(--navy-900);
+  }
+  .main-heading p{margin:0;font-size:13px;color:var(--ink-400);}
+  .updated-chip{
+    font-size:12px;color:var(--teal-600);
+    background:#fff;border:1px solid var(--line);
+    padding:6px 11px;border-radius:var(--radius-pill);
+    display:flex;align-items:center;gap:6px;
+  }
+  .updated-chip .pulse{
+    width:6px;height:6px;border-radius:50%;background:var(--ok);
+  }
+
+  /* KPI row */
+  .kpi-row{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:14px;
+    margin-bottom:20px;
+  }
+  .kpi-card{
+    background:#fff;
+    border:1px solid var(--line);
+    border-radius:var(--radius-card);
+    padding:16px 18px;
+    position:relative;
+    overflow:hidden;
+  }
+  .kpi-card::before{
+    content:"";position:absolute;left:0;top:0;bottom:0;width:3px;
+  }
+  .kpi-card.total::before{background:var(--navy-700);}
+  .kpi-card.ok::before{background:var(--ok);}
+  .kpi-card.warn::before{background:var(--warn);}
+  .kpi-card.bad::before{background:var(--bad);}
+  .kpi-num{font-family:var(--font-head);font-size:30px;font-weight:600;color:var(--navy-900);line-height:1;}
+  .kpi-label{font-size:12.5px;color:var(--ink-600);margin-top:6px;}
+  .kpi-sub{font-size:11.5px;color:var(--ink-400);margin-top:3px;}
+
+  /* Grid: map + panel */
+  .content-grid{
+    display:grid;
+    grid-template-columns:1.65fr 1fr;
+    gap:16px;
+    align-items:start;
+  }
+
+  .panel{
+    background:#fff;
+    border:1px solid var(--line);
+    border-radius:var(--radius-card);
+    overflow:hidden;
+  }
+  .panel-head{
+    padding:14px 18px;
+    border-bottom:1px solid var(--line);
+    display:flex;justify-content:space-between;align-items:center;
+  }
+  .panel-head h3{
+    font-family:var(--font-head);
+    font-size:15.5px;font-weight:600;margin:0;color:var(--navy-900);
+  }
+  .panel-head .link{font-size:12px;color:var(--teal-600);cursor:pointer;}
+
+  /* Map mock */
+  .map-wrap{position:relative;height:398px;background:#DCE9E4;}
+  .map-svg{width:100%;height:100%;display:block;}
+  .map-legend{
+    position:absolute;bottom:14px;left:14px;
+    background:rgba(255,255,255,.95);
+    border:1px solid var(--line);
+    border-radius:4px;
+    padding:10px 13px;
+    font-size:11.5px;
+    color:var(--ink-600);
+  }
+  .map-legend .row{display:flex;align-items:center;gap:7px;margin-top:5px;}
+  .map-legend .row:first-child{margin-top:0;}
+  .legend-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0;}
+  .map-layers{
+    position:absolute;top:14px;right:14px;
+    background:rgba(255,255,255,.95);
+    border:1px solid var(--line);
+    border-radius:4px;
+    padding:9px 11px;
+    font-size:11px;color:var(--ink-600);
+    max-width:150px;
+  }
+  .map-layers .layer-row{display:flex;align-items:center;gap:6px;padding:3px 0;}
+  .map-layers input{accent-color:var(--teal-500);}
+
+  /* Notification panel */
+  .notif-list{padding:6px 0;}
+  .notif-item{
+    display:flex;gap:11px;
+    padding:12px 18px;
+    border-bottom:1px solid var(--cream-100);
+  }
+  .notif-item:last-child{border-bottom:none;}
+  .notif-flag{width:6px;border-radius:3px;flex-shrink:0;}
+  .notif-flag.bad{background:var(--bad);}
+  .notif-flag.warn{background:var(--warn);}
+  .notif-body p{margin:0;font-size:12.5px;color:var(--ink-900);line-height:1.45;}
+  .notif-body .meta{font-size:11px;color:var(--ink-400);margin-top:3px;}
+
+  /* Table */
+  .table-panel{margin-top:16px;}
+  table{width:100%;border-collapse:collapse;font-size:12.5px;}
+  thead th{
+    text-align:left;
+    font-size:11px;color:var(--ink-400);
+    text-transform:uppercase;letter-spacing:.4px;font-weight:600;
+    padding:10px 18px;border-bottom:1px solid var(--line);
+    background:var(--cream-50);
+  }
+  tbody td{
+    padding:11px 18px;
+    border-bottom:1px solid var(--cream-100);
+    color:var(--ink-900);
+    vertical-align:middle;
+  }
+  tbody tr:last-child td{border-bottom:none;}
+  .proj-id{font-family:var(--font-mono);font-size:11.5px;color:var(--ink-600);}
+  .status-pill{
+    display:inline-flex;align-items:center;gap:6px;
+    padding:4px 10px;border-radius:var(--radius-pill);
+    font-size:11.5px;font-weight:600;
+  }
+  .status-pill .dot{width:6px;height:6px;border-radius:50%;}
+  .status-pill.ok{background:var(--ok-bg);color:var(--ok);}
+  .status-pill.ok .dot{background:var(--ok);}
+  .status-pill.warn{background:var(--warn-bg);color:var(--warn);}
+  .status-pill.warn .dot{background:var(--warn);}
+  .status-pill.bad{background:var(--bad-bg);color:var(--bad);}
+  .status-pill.bad .dot{background:var(--bad);}
+  .progress-cell{display:flex;align-items:center;gap:8px;}
+  .progress-track{width:64px;height:5px;background:var(--cream-100);border-radius:3px;overflow:hidden;}
+  .progress-fill{height:100%;border-radius:3px;}
+
+  .view-caption{
+    text-align:center;font-size:12px;color:var(--ink-400);
+    padding:14px 20px 6px;font-style:italic;
+  }
+
+  /* =====================================================
+     VIEW 2 — MOBILE FIELD APP (Pengawas / Kontraktor)
+     ===================================================== */
+  .mobile-stage{
+    flex:1;
+    background:var(--navy-900);
+    background-image:radial-gradient(circle at 25% 15%, rgba(28,124,124,.35), transparent 45%);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:44px 20px;
+    gap:40px;
+    flex-wrap:wrap;
+  }
+  .phone{
+    width:340px;
+    background:var(--cream-50);
+    border-radius:34px;
+    border:9px solid var(--navy-800);
+    box-shadow:0 30px 60px rgba(0,0,0,.4);
+    overflow:hidden;
+    display:flex;
+    flex-direction:column;
+    max-height:720px;
+  }
+  .phone-notch{
+    background:var(--navy-800);
+    height:18px;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .phone-notch .bump{width:70px;height:8px;background:var(--navy-900);border-radius:6px;}
+  .phone-topbar{
+    background:linear-gradient(120deg,var(--navy-800),var(--teal-600));
+    color:#fff;padding:16px 18px 14px;
+  }
+  .phone-topbar .app-name{font-family:var(--font-head);font-size:16px;font-weight:600;}
+  .phone-topbar .app-sub{font-size:11px;color:var(--gold-300);margin-top:2px;}
+  .phone-scroll{flex:1;overflow-y:auto;padding:16px 16px 22px;}
+
+  .field-group{margin-bottom:14px;}
+  .field-label{
+    font-size:11px;color:var(--ink-600);font-weight:600;
+    margin-bottom:5px;display:flex;justify-content:space-between;align-items:center;
+  }
+  .field-label .tag{
+    font-size:9.5px;color:var(--ink-400);font-weight:500;
+    font-family:var(--font-mono);
+  }
+  .field-control{
+    background:#fff;border:1px solid var(--line);border-radius:8px;
+    padding:10px 12px;font-size:13px;color:var(--ink-900);
+    display:flex;justify-content:space-between;align-items:center;
+  }
+  .field-control.auto{
+    background:var(--cream-100);color:var(--ink-600);
+  }
+  .field-control .caret{color:var(--ink-400);font-size:11px;}
+
+  .gps-box{
+    background:var(--cream-100);border:1px solid var(--line);border-radius:8px;
+    padding:10px 12px;font-size:11.5px;color:var(--ink-600);
+    font-family:var(--font-mono);
+    display:flex;align-items:center;gap:8px;
+  }
+  .gps-box .gps-dot{width:7px;height:7px;border-radius:50%;background:var(--ok);flex-shrink:0;}
+
+  .progress-slider{
+    background:#fff;border:1px solid var(--line);border-radius:8px;padding:12px;
+  }
+  .progress-slider .value{font-family:var(--font-head);font-size:24px;font-weight:600;color:var(--navy-900);}
+  .progress-slider .bar{height:7px;background:var(--cream-100);border-radius:4px;margin-top:9px;overflow:hidden;}
+  .progress-slider .bar-fill{height:100%;width:15.5%;background:linear-gradient(90deg,var(--teal-500),var(--gold-500));}
+
+  .photo-row{display:flex;gap:8px;}
+  .photo-slot{
+    flex:1;aspect-ratio:1;border-radius:8px;
+    background:var(--cream-100);border:1.5px dashed var(--line);
+    display:flex;align-items:center;justify-content:center;
+    color:var(--ink-400);font-size:10px;text-align:center;
+    flex-direction:column;gap:5px;
+  }
+  .photo-slot svg{width:18px;height:18px;opacity:.55;}
+  .photo-slot.filled{
+    background:linear-gradient(160deg,#8AA9A0,#4C6A63);
+    border-style:solid;color:rgba(255,255,255,.85);
+  }
+
+  .textarea-box{
+    background:#fff;border:1px solid var(--line);border-radius:8px;
+    padding:10px 12px;font-size:12px;color:var(--ink-400);min-height:52px;
+  }
+  .sig-box{
+    background:#fff;border:1px solid var(--line);border-radius:8px;
+    height:64px;position:relative;
+  }
+  .sig-box .sig-line{
+    position:absolute;left:12px;right:12px;bottom:16px;height:1px;background:var(--line);
+  }
+  .sig-box .sig-hint{
+    position:absolute;top:8px;left:12px;font-size:10px;color:var(--ink-400);
+  }
+
+  .submit-btn{
+    margin-top:18px;
+    background:var(--navy-900);color:#fff;text-align:center;
+    padding:13px;border-radius:9px;font-weight:600;font-size:13.5px;
+    letter-spacing:.2px;
+  }
+
+  .phone-caption{
+    text-align:center;color:var(--cream-100);font-size:13px;margin-top:16px;max-width:340px;
+  }
+  .phone-caption .who{font-family:var(--font-head);font-size:15px;color:#fff;display:block;margin-bottom:4px;}
+
+  @media (max-width:880px){
+    .content-grid{grid-template-columns:1fr;}
+    .kpi-row{grid-template-columns:repeat(2,1fr);}
+    .sidebar{display:none;}
+  }
+</style>
+</head>
+<body>
+<div class="shell">
+
+  <div class="switcher-bar">
+    <div class="switcher-label"><strong>Mock-up desain</strong> — SIG Pemantauan Proyek Infrastruktur, Pemkot Singkawang</div>
+    <div class="switcher-tabs">
+      <button class="active" data-target="view-web">Dasbor Web — Pimpinan / BAPPERIDA / Dinas</button>
+      <button data-target="view-mobile">Aplikasi Mobile — Pengawas / Kontraktor</button>
+    </div>
+  </div>
+
+  <!-- ============ VIEW 1: WEB DASHBOARD ============ -->
+  <div class="view active" id="view-web">
+    <div class="topbar">
+      <div class="brand">
+        <div class="brand-mark">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M12 2 L21 7 V17 L12 22 L3 17 V7 Z" stroke="#F6F4EE" stroke-width="1.3"/><circle cx="12" cy="12" r="3" fill="#C99A3E"/></svg>
+        </div>
+        <div class="brand-text">
+          <div class="eyebrow">Pemerintah Kota Singkawang</div>
+          <h1>SIG Pemantauan Infrastruktur</h1>
+        </div>
+      </div>
+      <div class="topbar-role"><span class="dot"></span> Masuk sebagai: BAPPERIDA — Bidang Litbang &amp; Infrastruktur</div>
+    </div>
+
+    <div class="app-body">
+      <div class="sidebar">
+        <div class="sidebar-section-label">Kategori Infrastruktur</div>
+        <div class="sidebar-item is-active"><span class="swatch" style="background:var(--navy-700)"></span> Semua Kategori</div>
+        <div class="sidebar-item"><span class="swatch" style="background:#7C8B92"></span> Jalan &amp; Jembatan</div>
+        <div class="sidebar-item"><span class="swatch" style="background:#7C8B92"></span> Sumber Daya Air</div>
+        <div class="sidebar-item"><span class="swatch" style="background:#7C8B92"></span> Cipta Karya / Gedung</div>
+        <div class="sidebar-item"><span class="swatch" style="background:#7C8B92"></span> Air Minum &amp; Sanitasi</div>
+        <div class="sidebar-item"><span class="swatch" style="background:#7C8B92"></span> Perhubungan &amp; PJU</div>
+        <div class="sidebar-divider"></div>
+        <div class="sidebar-section-label">Tampilan</div>
+        <div class="sidebar-item">Peta Sebaran Proyek</div>
+        <div class="sidebar-item">Daftar Kontrak</div>
+        <div class="sidebar-item">Laporan &amp; Ekspor</div>
+        <div class="sidebar-item">Riwayat Notifikasi</div>
+      </div>
+
+      <div class="main">
+        <div class="main-heading">
+          <div>
+            <h2>Ringkasan Proyek — Tahun Anggaran 2026</h2>
+            <p>128 paket pekerjaan aktif di 5 kategori infrastruktur, Kota Singkawang</p>
+          </div>
+          <div class="updated-chip"><span class="pulse"></span> Diperbarui otomatis · 2 menit lalu</div>
+        </div>
+
+        <div class="kpi-row">
+          <div class="kpi-card total">
+            <div class="kpi-num">128</div>
+            <div class="kpi-label">Total Proyek Berjalan</div>
+            <div class="kpi-sub">Rp 214,6 M nilai kontrak</div>
+          </div>
+          <div class="kpi-card ok">
+            <div class="kpi-num">91</div>
+            <div class="kpi-label">Sesuai Jadwal</div>
+            <div class="kpi-sub">71% dari total proyek</div>
+          </div>
+          <div class="kpi-card warn">
+            <div class="kpi-num">24</div>
+            <div class="kpi-label">Berisiko Terlambat</div>
+            <div class="kpi-sub">Perlu pemantauan lanjut</div>
+          </div>
+          <div class="kpi-card bad">
+            <div class="kpi-num">13</div>
+            <div class="kpi-label">Terlambat</div>
+            <div class="kpi-sub">Butuh intervensi segera</div>
+          </div>
+        </div>
+
+        <div class="content-grid">
+          <div class="panel">
+            <div class="panel-head">
+              <h3>Peta Sebaran Proyek</h3>
+              <span class="link">Perluas peta →</span>
+            </div>
+            <div class="map-wrap">
+              <svg class="map-svg" viewBox="0 0 640 400" preserveAspectRatio="xMidYMid slice">
+                <rect width="640" height="400" fill="#DCE9E4"/>
+                <path d="M0 60 L100 90 L180 70 L260 110 L340 90 L420 130 L500 100 L580 140 L640 120 L640 0 L0 0 Z" fill="#CFE0D9"/>
+                <path d="M0 400 L0 260 L90 240 L170 280 L250 250 L330 290 L410 260 L500 300 L580 270 L640 300 L640 400 Z" fill="#C6DBD2"/>
+                <path d="M40 0 L60 400" stroke="#B7CFC5" stroke-width="10"/>
+                <path d="M0 180 L640 210" stroke="#B7CFC5" stroke-width="7"/>
+                <path d="M300 0 L320 400" stroke="#AECDE8" stroke-width="12" opacity="0.6"/>
+                <g font-family="Inter, sans-serif">
+                  <circle cx="150" cy="150" r="8" fill="#2E8B57" stroke="#fff" stroke-width="2"/>
+                  <circle cx="230" cy="200" r="8" fill="#2E8B57" stroke="#fff" stroke-width="2"/>
+                  <circle cx="330" cy="140" r="8" fill="#C88A1E" stroke="#fff" stroke-width="2"/>
+                  <circle cx="410" cy="230" r="8" fill="#2E8B57" stroke="#fff" stroke-width="2"/>
+                  <circle cx="470" cy="160" r="8" fill="#B8433C" stroke="#fff" stroke-width="2"/>
+                  <circle cx="200" cy="270" r="8" fill="#2E8B57" stroke="#fff" stroke-width="2"/>
+                  <circle cx="360" cy="290" r="8" fill="#C88A1E" stroke="#fff" stroke-width="2"/>
+                  <circle cx="500" cy="260" r="8" fill="#2E8B57" stroke="#fff" stroke-width="2"/>
+                  <circle cx="120" cy="230" r="8" fill="#B8433C" stroke="#fff" stroke-width="2"/>
+                  <circle cx="280" cy="90" r="8" fill="#2E8B57" stroke="#fff" stroke-width="2"/>
+                  <circle cx="550" cy="200" r="8" fill="#2E8B57" stroke="#fff" stroke-width="2"/>
+                  <circle cx="90" cy="110" r="8" fill="#C88A1E" stroke="#fff" stroke-width="2"/>
+                </g>
+              </svg>
+              <div class="map-legend">
+                <div class="row"><span class="legend-dot" style="background:var(--ok)"></span> Sesuai jadwal</div>
+                <div class="row"><span class="legend-dot" style="background:var(--warn)"></span> Berisiko</div>
+                <div class="row"><span class="legend-dot" style="background:var(--bad)"></span> Terlambat</div>
+              </div>
+              <div class="map-layers">
+                <div class="layer-row"><input type="checkbox" checked> Jalan &amp; Jembatan</div>
+                <div class="layer-row"><input type="checkbox" checked> Sumber Daya Air</div>
+                <div class="layer-row"><input type="checkbox" checked> Gedung</div>
+                <div class="layer-row"><input type="checkbox"> Sanitasi</div>
+                <div class="layer-row"><input type="checkbox"> PJU</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="panel">
+            <div class="panel-head">
+              <h3>Notifikasi Peringatan Dini</h3>
+              <span class="link">Lihat semua →</span>
+            </div>
+            <div class="notif-list">
+              <div class="notif-item">
+                <div class="notif-flag bad"></div>
+                <div class="notif-body">
+                  <p><strong>PRJ-SKW-2026-011</strong> — Rehab Jembatan Sungai Wie tidak ada pembaruan progres 9 hari.</p>
+                  <div class="meta">Jalan &amp; Jembatan · terlambat 12 hari dari rencana</div>
+                </div>
+              </div>
+              <div class="notif-item">
+                <div class="notif-flag warn"></div>
+                <div class="notif-body">
+                  <p><strong>PRJ-SKW-2026-004</strong> — Progres minggu ini di bawah target kurva-S (15,5% vs 22%).</p>
+                  <div class="meta">Cipta Karya / Gedung · kendala cuaca hujan</div>
+                </div>
+              </div>
+              <div class="notif-item">
+                <div class="notif-flag bad"></div>
+                <div class="notif-body">
+                  <p><strong>PRJ-SKW-2026-019</strong> — Material belum tiba, dilaporkan kontraktor 3 hari berturut.</p>
+                  <div class="meta">Air Minum &amp; Sanitasi · berisiko wanprestasi</div>
+                </div>
+              </div>
+              <div class="notif-item">
+                <div class="notif-flag warn"></div>
+                <div class="notif-body">
+                  <p><strong>PRJ-SKW-2026-007</strong> — Belum ada foto geotag masuk sejak verifikasi terakhir.</p>
+                  <div class="meta">Perhubungan &amp; PJU · perlu tindak lanjut pengawas</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel table-panel">
+          <div class="panel-head">
+            <h3>Daftar Proyek Terbaru</h3>
+            <span class="link">Ekspor ke Excel →</span>
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <th>ID Kontrak</th>
+                <th>Nama Paket Pekerjaan</th>
+                <th>Kategori</th>
+                <th>Progres</th>
+                <th>Status</th>
+                <th>Update Terakhir</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="proj-id">PRJ-SKW-2026-004</td>
+                <td>Peningkatan Jalan Lingkungan Sedau</td>
+                <td>Jalan &amp; Jembatan</td>
+                <td><div class="progress-cell"><div class="progress-track"><div class="progress-fill" style="width:62%;background:var(--ok)"></div></div>62%</div></td>
+                <td><span class="status-pill ok"><span class="dot"></span>Sesuai Jadwal</span></td>
+                <td>1 Sep 2026, 14:30</td>
+              </tr>
+              <tr>
+                <td class="proj-id">PRJ-SKW-2026-011</td>
+                <td>Rehabilitasi Jembatan Sungai Wie</td>
+                <td>Jalan &amp; Jembatan</td>
+                <td><div class="progress-cell"><div class="progress-track"><div class="progress-fill" style="width:31%;background:var(--bad)"></div></div>31%</div></td>
+                <td><span class="status-pill bad"><span class="dot"></span>Terlambat</span></td>
+                <td>23 Agu 2026, 09:12</td>
+              </tr>
+              <tr>
+                <td class="proj-id">PRJ-SKW-2026-019</td>
+                <td>Pembangunan Jaringan Air Bersih Roban</td>
+                <td>Air Minum &amp; Sanitasi</td>
+                <td><div class="progress-cell"><div class="progress-track"><div class="progress-fill" style="width:44%;background:var(--warn)"></div></div>44%</div></td>
+                <td><span class="status-pill warn"><span class="dot"></span>Berisiko</span></td>
+                <td>31 Agu 2026, 16:05</td>
+              </tr>
+              <tr>
+                <td class="proj-id">PRJ-SKW-2026-027</td>
+                <td>Pembangunan Gedung Puskesmas Pembantu</td>
+                <td>Cipta Karya / Gedung</td>
+                <td><div class="progress-cell"><div class="progress-track"><div class="progress-fill" style="width:78%;background:var(--ok)"></div></div>78%</div></td>
+                <td><span class="status-pill ok"><span class="dot"></span>Sesuai Jadwal</span></td>
+                <td>1 Sep 2026, 08:47</td>
+              </tr>
+              <tr>
+                <td class="proj-id">PRJ-SKW-2026-033</td>
+                <td>Penerangan Jalan Umum Kawasan Pasiran</td>
+                <td>Perhubungan &amp; PJU</td>
+                <td><div class="progress-cell"><div class="progress-track"><div class="progress-fill" style="width:19%;background:var(--warn)"></div></div>19%</div></td>
+                <td><span class="status-pill warn"><span class="dot"></span>Berisiko</span></td>
+                <td>29 Agu 2026, 11:20</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="view-caption">Tampilan ini digunakan oleh Pimpinan Daerah, BAPPERIDA (pengelola sistem), dan Dinas Teknis terkait.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ VIEW 2: MOBILE FIELD APP ============ -->
+  <div class="view" id="view-mobile">
+    <div class="mobile-stage">
+      <div>
+        <div class="phone">
+          <div class="phone-notch"><div class="bump"></div></div>
+          <div class="phone-topbar">
+            <div class="app-name">Lapor Progres Lapangan</div>
+            <div class="app-sub">SIG Infrastruktur Singkawang · Mode Pengawas</div>
+          </div>
+          <div class="phone-scroll">
+
+            <div class="field-group">
+              <div class="field-label">ID Proyek / Kontrak <span class="tag">auto-fill</span></div>
+              <div class="field-control">PRJ-SKW-2026-004 · Jln. Lingkungan Sedau<span class="caret">▾</span></div>
+            </div>
+
+            <div class="field-group">
+              <div class="field-label">Waktu Pengambilan Data <span class="tag">system auto</span></div>
+              <div class="field-control auto">2026-09-01 · 14:30 WIB</div>
+            </div>
+
+            <div class="field-group">
+              <div class="field-label">Koordinat Geospasial <span class="tag">GPS auto-detect</span></div>
+              <div class="gps-box"><span class="gps-dot"></span> Lat -0.89123, Long 108.98124 — akurasi 4m</div>
+            </div>
+
+            <div class="field-group">
+              <div class="field-label">Kategori Infrastruktur</div>
+              <div class="field-control">Jalan &amp; Jembatan<span class="caret">▾</span></div>
+            </div>
+
+            <div class="field-group">
+              <div class="field-label">Tahapan Pekerjaan</div>
+              <div class="field-control">Lapis Pondasi Atas<span class="caret">▾</span></div>
+            </div>
+
+            <div class="field-group">
+              <div class="field-label">Progres Fisik Minggu Ini</div>
+              <div class="progress-slider">
+                <div class="value">15,5%</div>
+                <div class="bar"><div class="bar-fill"></div></div>
+              </div>
+            </div>
+
+            <div class="field-group">
+              <div class="field-label">Foto Kondisi Lapangan <span class="tag">min. 3 foto, geotag</span></div>
+              <div class="photo-row">
+                <div class="photo-slot filled">Depan</div>
+                <div class="photo-slot filled">Samping</div>
+                <div class="photo-slot">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7l1.5-3h5L16 7"/><circle cx="12" cy="13.5" r="3.2"/></svg>
+                  Close-up
+                </div>
+              </div>
+            </div>
+
+            <div class="field-group">
+              <div class="field-label">Catatan / Kendala</div>
+              <div class="textarea-box">Kendala cuaca hujan sejak Jumat, pengecoran ditunda 2 hari…</div>
+            </div>
+
+            <div class="field-group">
+              <div class="field-label">Tanda Tangan Pengawas <span class="tag">digital signature</span></div>
+              <div class="sig-box"><span class="sig-hint">Tanda tangan di sini</span><span class="sig-line"></span></div>
+            </div>
+
+            <div class="submit-btn">Kirim Laporan</div>
+          </div>
+        </div>
+        <div class="phone-caption"><span class="who">Pengawas &amp; Kontraktor Lapangan</span>Formulir digital pengganti laporan tertulis — koordinat dan waktu terekam otomatis, foto wajib ber-geotag.</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  document.querySelectorAll('.switcher-tabs button').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      document.querySelectorAll('.switcher-tabs button').forEach(function(b){b.classList.remove('active');});
+      document.querySelectorAll('.view').forEach(function(v){v.classList.remove('active');});
+      btn.classList.add('active');
+      document.getElementById(btn.dataset.target).classList.add('active');
+    });
+  });
+</script>
+</body>
+</html>
