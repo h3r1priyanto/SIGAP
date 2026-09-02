@@ -447,7 +447,73 @@
   }
   .phone-caption .who{font-family:var(--font-head);font-size:15px;color:#fff;display:block;margin-bottom:4px;}
 
+  /* ===== BAPPERIDA dashboard — extra components ===== */
+  .role-badges{display:flex;gap:8px;margin-top:8px;flex-wrap:wrap;}
+  .role-badge{
+    font-size:11px;font-weight:600;padding:5px 11px;border-radius:var(--radius-pill);
+    display:inline-flex;align-items:center;gap:6px;
+  }
+  .role-badge.pengelola{background:var(--navy-900);color:var(--gold-300);}
+  .role-badge.penerima{background:var(--teal-600);color:#fff;}
+  .role-badge .dot{width:6px;height:6px;border-radius:50%;background:currentColor;opacity:.8;}
+
+  .sub-view{display:none;}
+  .sub-view.active{display:block;}
+
+  .content-grid-equal{
+    display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:start;
+  }
+
+  /* koneksi sumber data */
+  .conn-row{
+    display:flex;justify-content:space-between;align-items:center;
+    padding:11px 18px;border-bottom:1px solid var(--cream-100);font-size:12.5px;
+  }
+  .conn-row:last-child{border-bottom:none;}
+  .conn-name{color:var(--ink-900);}
+  .conn-name .sub{display:block;font-size:11px;color:var(--ink-400);margin-top:1px;}
+  .conn-status{display:flex;align-items:center;gap:7px;font-size:11.5px;color:var(--ink-600);}
+  .conn-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
+  .conn-dot.on{background:var(--ok);}
+  .conn-dot.warn{background:var(--warn);}
+  .conn-dot.off{background:var(--ink-400);}
+
+  /* log aktivitas — reuse notif style, tambahan warna netral */
+  .notif-flag.neutral{background:var(--ink-400);}
+  .notif-flag.ok{background:var(--ok);}
+
+  /* distribusi anggaran */
+  .budget-row{padding:13px 18px;border-bottom:1px solid var(--cream-100);}
+  .budget-row:last-child{border-bottom:none;}
+  .budget-top{display:flex;justify-content:space-between;font-size:12.5px;margin-bottom:7px;}
+  .budget-top .cat{color:var(--ink-900);font-weight:600;}
+  .budget-top .amt{color:var(--ink-400);font-family:var(--font-mono);font-size:11.5px;}
+  .budget-track{height:9px;background:var(--cream-100);border-radius:5px;overflow:hidden;}
+  .budget-fill{height:100%;border-radius:5px;background:linear-gradient(90deg,var(--teal-500),var(--navy-700));}
+
+  /* pemerataan kecamatan */
+  .kec-row{padding:13px 18px;border-bottom:1px solid var(--cream-100);display:flex;align-items:center;gap:16px;}
+  .kec-row:last-child{border-bottom:none;}
+  .kec-name{width:150px;flex-shrink:0;font-size:12.5px;color:var(--ink-900);font-weight:600;}
+  .kec-meta{flex:1;}
+  .kec-meta-top{display:flex;justify-content:space-between;font-size:11.5px;color:var(--ink-400);margin-bottom:5px;}
+  .kec-track{height:7px;background:var(--cream-100);border-radius:4px;overflow:hidden;}
+  .kec-fill{height:100%;border-radius:4px;}
+
+  /* rekomendasi Musrenbang */
+  .rec-card{padding:14px 18px;border-bottom:1px solid var(--cream-100);}
+  .rec-card:last-child{border-bottom:none;}
+  .rec-tag{
+    display:inline-block;font-size:10.5px;font-weight:700;letter-spacing:.2px;
+    padding:3px 10px;border-radius:var(--radius-pill);margin-bottom:8px;
+  }
+  .rec-tag.prioritas{background:var(--bad-bg);color:var(--bad);}
+  .rec-tag.evaluasi{background:var(--warn-bg);color:var(--warn);}
+  .rec-tag.inovasi{background:var(--ok-bg);color:var(--ok);}
+  .rec-card p{margin:0;font-size:12.5px;color:var(--ink-900);line-height:1.55;}
+
   @media (max-width:880px){
+    .content-grid-equal{grid-template-columns:1fr;}
     .content-grid{grid-template-columns:1fr;}
     .kpi-row{grid-template-columns:repeat(2,1fr);}
     .sidebar{display:none;}
@@ -460,7 +526,8 @@
   <div class="switcher-bar">
     <div class="switcher-label"><strong>Mock-up desain</strong> — SIG Pemantauan Proyek Infrastruktur, Pemkot Singkawang</div>
     <div class="switcher-tabs">
-      <button class="active" data-target="view-web">Dasbor Web — Pimpinan / BAPPERIDA / Dinas</button>
+      <button class="active" data-target="view-web">Dasbor Web — Pimpinan / Dinas</button>
+      <button data-target="view-bapperida">Dasbor BAPPERIDA — Pengelola Sistem</button>
       <button data-target="view-mobile">Aplikasi Mobile — Pengawas / Kontraktor</button>
     </div>
   </div>
@@ -731,6 +798,343 @@
     </div>
   </div>
 
+  <!-- ============ VIEW 1B: BAPPERIDA — PENGELOLA SISTEM & PERENCANAAN ============ -->
+  <div class="view" id="view-bapperida">
+    <div class="topbar">
+      <div class="brand">
+        <div class="brand-mark">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M12 2 L21 7 V17 L12 22 L3 17 V7 Z" stroke="#F6F4EE" stroke-width="1.3"/><circle cx="12" cy="12" r="3" fill="#C99A3E"/></svg>
+        </div>
+        <div class="brand-text">
+          <div class="eyebrow">Badan Perencanaan Pembangunan, Riset &amp; Inovasi Daerah</div>
+          <h1>Dasbor BAPPERIDA — Kota Singkawang</h1>
+        </div>
+      </div>
+      <div class="topbar-role"><span class="dot"></span> Masuk sebagai: BAPPERIDA — Super Admin</div>
+    </div>
+
+    <div class="app-body">
+      <div class="sidebar">
+        <div class="sidebar-section-label">Peran BAPPERIDA</div>
+        <div class="sidebar-item is-active" data-subtarget="sub-admin"><span class="swatch" style="background:var(--navy-700)"></span> Pengelola Sistem</div>
+        <div class="sidebar-item" data-subtarget="sub-planning"><span class="swatch" style="background:var(--teal-500)"></span> Perencanaan &amp; Riset</div>
+        <div class="sidebar-divider"></div>
+        <div class="sidebar-section-label">Pintasan</div>
+        <div class="sidebar-item">Manajemen Pengguna &amp; OPD</div>
+        <div class="sidebar-item">Sumber Data &amp; Integrasi</div>
+        <div class="sidebar-item">Evaluasi RPJMD / RKPD</div>
+        <div class="sidebar-item">Bahan Usulan Musrenbang</div>
+        <div class="sidebar-item">Ekspor Laporan</div>
+      </div>
+
+      <div class="main">
+
+        <!-- SUB-VIEW A: PENGELOLA SISTEM -->
+        <div class="sub-view active" id="sub-admin">
+          <div class="main-heading">
+            <div>
+              <h2>Panel Kendali Sistem</h2>
+              <p>Manajemen akses, sumber data, dan kesehatan platform SIG Infrastruktur</p>
+              <div class="role-badges">
+                <span class="role-badge pengelola"><span class="dot"></span>Pengampu &amp; pengelola sistem</span>
+              </div>
+            </div>
+            <div class="updated-chip"><span class="pulse"></span> Sinkron terakhir · 2 menit lalu</div>
+          </div>
+
+          <div class="kpi-row">
+            <div class="kpi-card total">
+              <div class="kpi-num">5/5</div>
+              <div class="kpi-label">OPD Teknis Terhubung</div>
+              <div class="kpi-sub">Seluruh dinas pengampu kategori</div>
+            </div>
+            <div class="kpi-card ok">
+              <div class="kpi-num">42</div>
+              <div class="kpi-label">Pengguna Aktif</div>
+              <div class="kpi-sub">Admin dinas, pengawas &amp; kontraktor</div>
+            </div>
+            <div class="kpi-card ok">
+              <div class="kpi-num">99,4%</div>
+              <div class="kpi-label">Uptime Sistem — 30 Hari</div>
+              <div class="kpi-sub">Server GIS &amp; basis data spasial</div>
+            </div>
+            <div class="kpi-card warn">
+              <div class="kpi-num">1.284</div>
+              <div class="kpi-label">Entri Data Masuk</div>
+              <div class="kpi-sub">Minggu berjalan, dari mobile app</div>
+            </div>
+          </div>
+
+          <div class="content-grid-equal">
+            <div class="panel">
+              <div class="panel-head">
+                <h3>Sumber Data &amp; Integrasi</h3>
+                <span class="link">Kelola →</span>
+              </div>
+              <div>
+                <div class="conn-row">
+                  <div class="conn-name">PostgreSQL / PostGIS<span class="sub">Basis data spasial utama</span></div>
+                  <div class="conn-status"><span class="conn-dot on"></span>Terhubung</div>
+                </div>
+                <div class="conn-row">
+                  <div class="conn-name">GeoServer<span class="sub">Layanan lapisan peta (WMS/WFS)</span></div>
+                  <div class="conn-status"><span class="conn-dot on"></span>Terhubung</div>
+                </div>
+                <div class="conn-row">
+                  <div class="conn-name">Aplikasi Mobile Lapangan<span class="sub">API pelaporan pengawas/kontraktor</span></div>
+                  <div class="conn-status"><span class="conn-dot on"></span>Terhubung</div>
+                </div>
+                <div class="conn-row">
+                  <div class="conn-name">SIPD Kemendagri<span class="sub">Sinkronisasi data perencanaan &amp; anggaran</span></div>
+                  <div class="conn-status"><span class="conn-dot warn"></span>Sinkron tertunda</div>
+                </div>
+                <div class="conn-row">
+                  <div class="conn-name">e-Monev Bappenas<span class="sub">Pelaporan capaian pembangunan nasional</span></div>
+                  <div class="conn-status"><span class="conn-dot off"></span>Belum terhubung</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="panel">
+              <div class="panel-head">
+                <h3>Log Aktivitas Sistem</h3>
+                <span class="link">Lihat semua →</span>
+              </div>
+              <div class="notif-list">
+                <div class="notif-item">
+                  <div class="notif-flag ok"></div>
+                  <div class="notif-body">
+                    <p>Admin <strong>Dinas PUPR</strong> menambahkan 3 laporan progres baru.</p>
+                    <div class="meta">Jalan &amp; Jembatan · 6 menit lalu</div>
+                  </div>
+                </div>
+                <div class="notif-item">
+                  <div class="notif-flag neutral"></div>
+                  <div class="notif-body">
+                    <p>BAPPERIDA memperbarui hak akses pengguna <strong>Dishub</strong> menjadi Editor.</p>
+                    <div class="meta">Manajemen pengguna · 41 menit lalu</div>
+                  </div>
+                </div>
+                <div class="notif-item">
+                  <div class="notif-flag warn"></div>
+                  <div class="notif-body">
+                    <p>Percobaan login gagal 3× pada akun <strong>kontraktor CV Mitra Karya</strong>.</p>
+                    <div class="meta">Keamanan · 2 jam lalu</div>
+                  </div>
+                </div>
+                <div class="notif-item">
+                  <div class="notif-flag ok"></div>
+                  <div class="notif-body">
+                    <p>Ekspor laporan triwulan III berhasil dibuat oleh <strong>BAPPERIDA</strong>.</p>
+                    <div class="meta">Laporan &amp; ekspor · Kemarin, 16:12</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="panel table-panel">
+            <div class="panel-head">
+              <h3>Manajemen Pengguna &amp; Hak Akses</h3>
+              <span class="link">+ Tambah pengguna</span>
+            </div>
+            <table>
+              <thead>
+                <tr>
+                  <th>Nama / Instansi</th>
+                  <th>Peran</th>
+                  <th>Cakupan Kategori</th>
+                  <th>Status</th>
+                  <th>Aktivitas Terakhir</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>BAPPERIDA</td>
+                  <td><span class="status-pill ok"><span class="dot"></span>Super Admin</span></td>
+                  <td>Semua kategori</td>
+                  <td><span class="status-pill ok"><span class="dot"></span>Aktif</span></td>
+                  <td>Sekarang</td>
+                </tr>
+                <tr>
+                  <td>Dinas PUPR</td>
+                  <td><span class="status-pill ok"><span class="dot"></span>Admin Dinas</span></td>
+                  <td>Jalan &amp; Jembatan, SDA</td>
+                  <td><span class="status-pill ok"><span class="dot"></span>Aktif</span></td>
+                  <td>2 menit lalu</td>
+                </tr>
+                <tr>
+                  <td>Dinas Perumahan &amp; Kawasan Permukiman</td>
+                  <td><span class="status-pill ok"><span class="dot"></span>Admin Dinas</span></td>
+                  <td>Cipta Karya / Gedung</td>
+                  <td><span class="status-pill ok"><span class="dot"></span>Aktif</span></td>
+                  <td>14 menit lalu</td>
+                </tr>
+                <tr>
+                  <td>Dinas Perumahan, Air Minum &amp; Sanitasi</td>
+                  <td><span class="status-pill warn"><span class="dot"></span>Editor</span></td>
+                  <td>Air Minum &amp; Sanitasi</td>
+                  <td><span class="status-pill ok"><span class="dot"></span>Aktif</span></td>
+                  <td>1 jam lalu</td>
+                </tr>
+                <tr>
+                  <td>Dinas Perhubungan</td>
+                  <td><span class="status-pill warn"><span class="dot"></span>Editor</span></td>
+                  <td>Perhubungan &amp; PJU</td>
+                  <td><span class="status-pill bad"><span class="dot"></span>Nonaktif</span></td>
+                  <td>3 hari lalu</td>
+                </tr>
+                <tr>
+                  <td>CV Mitra Karya (Kontraktor)</td>
+                  <td><span class="status-pill warn"><span class="dot"></span>Pelapor Lapangan</span></td>
+                  <td>Jalan &amp; Jembatan</td>
+                  <td><span class="status-pill ok"><span class="dot"></span>Aktif</span></td>
+                  <td>8 menit lalu</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="view-caption">Panel ini hanya dapat diakses oleh BAPPERIDA selaku instansi pengampu sistem.</div>
+        </div>
+
+        <!-- SUB-VIEW B: PERENCANAAN & RISET -->
+        <div class="sub-view" id="sub-planning">
+          <div class="main-heading">
+            <div>
+              <h2>Perencanaan &amp; Riset Pembangunan</h2>
+              <p>Data capaian sebagai bahan evaluasi RPJMD/RKPD, prioritas anggaran, dan kajian inovasi daerah</p>
+              <div class="role-badges">
+                <span class="role-badge penerima"><span class="dot"></span>Penerima manfaat — fungsi perencanaan &amp; riset</span>
+              </div>
+            </div>
+            <div class="updated-chip"><span class="pulse"></span> Triwulan III · Tahun Anggaran 2026</div>
+          </div>
+
+          <div class="kpi-row">
+            <div class="kpi-card ok">
+              <div class="kpi-num">78%</div>
+              <div class="kpi-label">Capaian Fisik RPJMD 2026</div>
+              <div class="kpi-sub">Sektor infrastruktur</div>
+            </div>
+            <div class="kpi-card total">
+              <div class="kpi-num">Rp 168,4 M</div>
+              <div class="kpi-label">Realisasi Anggaran</div>
+              <div class="kpi-sub">dari pagu Rp 214,6 M</div>
+            </div>
+            <div class="kpi-card warn">
+              <div class="kpi-num">3</div>
+              <div class="kpi-label">Kajian &amp; Riset Berjalan</div>
+              <div class="kpi-sub">Berbasis data sistem SIG</div>
+            </div>
+            <div class="kpi-card total">
+              <div class="kpi-num">6</div>
+              <div class="kpi-label">Kecamatan Termonitor</div>
+              <div class="kpi-sub">Cakupan penuh wilayah kota</div>
+            </div>
+          </div>
+
+          <div class="content-grid">
+            <div class="panel">
+              <div class="panel-head">
+                <h3>Distribusi Anggaran per Kategori</h3>
+                <span class="link">Rincian →</span>
+              </div>
+              <div>
+                <div class="budget-row">
+                  <div class="budget-top"><span class="cat">Jalan &amp; Jembatan</span><span class="amt">Rp 82,3 M</span></div>
+                  <div class="budget-track"><div class="budget-fill" style="width:84%"></div></div>
+                </div>
+                <div class="budget-row">
+                  <div class="budget-top"><span class="cat">Sumber Daya Air</span><span class="amt">Rp 46,1 M</span></div>
+                  <div class="budget-track"><div class="budget-fill" style="width:63%"></div></div>
+                </div>
+                <div class="budget-row">
+                  <div class="budget-top"><span class="cat">Cipta Karya / Gedung</span><span class="amt">Rp 39,8 M</span></div>
+                  <div class="budget-track"><div class="budget-fill" style="width:71%"></div></div>
+                </div>
+                <div class="budget-row">
+                  <div class="budget-top"><span class="cat">Air Minum &amp; Sanitasi</span><span class="amt">Rp 29,5 M</span></div>
+                  <div class="budget-track"><div class="budget-fill" style="width:48%"></div></div>
+                </div>
+                <div class="budget-row">
+                  <div class="budget-top"><span class="cat">Perhubungan &amp; PJU</span><span class="amt">Rp 16,9 M</span></div>
+                  <div class="budget-track"><div class="budget-fill" style="width:29%"></div></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="panel">
+              <div class="panel-head">
+                <h3>Bahan Usulan Musrenbang 2027</h3>
+                <span class="link">Susun draf →</span>
+              </div>
+              <div>
+                <div class="rec-card">
+                  <span class="rec-tag prioritas">Prioritas</span>
+                  <p>Kec. Singkawang Utara — keterlambatan berulang pada 3 paket jalan; usulkan perbaikan drainase mendahului pengaspalan ulang.</p>
+                </div>
+                <div class="rec-card">
+                  <span class="rec-tag evaluasi">Evaluasi</span>
+                  <p>Realisasi kategori Perhubungan &amp; PJU terendah (29%) dari seluruh kategori — perlu telaah kapasitas kontraktor pelaksana.</p>
+                </div>
+                <div class="rec-card">
+                  <span class="rec-tag inovasi">Inovasi</span>
+                  <p>Replikasi geotagging wajib ke proyek non-fisik (pengadaan) sebagai kandidat inovasi daerah tahun depan.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="panel table-panel">
+            <div class="panel-head">
+              <h3>Pemerataan Pembangunan Antar Kecamatan</h3>
+              <span class="link">Buka analisis wilayah →</span>
+            </div>
+            <div>
+              <div class="kec-row">
+                <div class="kec-name">Singkawang Barat</div>
+                <div class="kec-meta">
+                  <div class="kec-meta-top"><span>27 proyek</span><span>Rata-rata progres 74%</span></div>
+                  <div class="kec-track"><div class="kec-fill" style="width:74%;background:var(--ok)"></div></div>
+                </div>
+              </div>
+              <div class="kec-row">
+                <div class="kec-name">Singkawang Tengah</div>
+                <div class="kec-meta">
+                  <div class="kec-meta-top"><span>31 proyek</span><span>Rata-rata progres 69%</span></div>
+                  <div class="kec-track"><div class="kec-fill" style="width:69%;background:var(--ok)"></div></div>
+                </div>
+              </div>
+              <div class="kec-row">
+                <div class="kec-name">Singkawang Selatan</div>
+                <div class="kec-meta">
+                  <div class="kec-meta-top"><span>19 proyek</span><span>Rata-rata progres 58%</span></div>
+                  <div class="kec-track"><div class="kec-fill" style="width:58%;background:var(--warn)"></div></div>
+                </div>
+              </div>
+              <div class="kec-row">
+                <div class="kec-name">Singkawang Timur</div>
+                <div class="kec-meta">
+                  <div class="kec-meta-top"><span>22 proyek</span><span>Rata-rata progres 61%</span></div>
+                  <div class="kec-track"><div class="kec-fill" style="width:61%;background:var(--warn)"></div></div>
+                </div>
+              </div>
+              <div class="kec-row">
+                <div class="kec-name">Singkawang Utara</div>
+                <div class="kec-meta">
+                  <div class="kec-meta-top"><span>29 proyek</span><span>Rata-rata progres 39%</span></div>
+                  <div class="kec-track"><div class="kec-fill" style="width:39%;background:var(--bad)"></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="view-caption">Data capaian dan anggaran bersifat contoh (dummy) untuk ilustrasi mock-up.</div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
   <!-- ============ VIEW 2: MOBILE FIELD APP ============ -->
   <div class="view" id="view-mobile">
     <div class="mobile-stage">
@@ -815,6 +1219,15 @@
       document.querySelectorAll('.view').forEach(function(v){v.classList.remove('active');});
       btn.classList.add('active');
       document.getElementById(btn.dataset.target).classList.add('active');
+    });
+  });
+
+  document.querySelectorAll('#view-bapperida .sidebar-item[data-subtarget]').forEach(function(item){
+    item.addEventListener('click', function(){
+      document.querySelectorAll('#view-bapperida .sidebar-item[data-subtarget]').forEach(function(i){i.classList.remove('is-active');});
+      document.querySelectorAll('#view-bapperida .sub-view').forEach(function(v){v.classList.remove('active');});
+      item.classList.add('is-active');
+      document.getElementById(item.dataset.subtarget).classList.add('active');
     });
   });
 </script>
